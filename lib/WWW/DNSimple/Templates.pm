@@ -1,10 +1,10 @@
-package WWW::DNSimple;
+package WWW::DNSimple::Templates;
 
-# ABSTRACT: Perl interface to the dnsimple.com API
+# ABSTRACT: Perl interface to the templates section of the dnsimple.com API.
 
 =head1 NAME
 
-WWW::DNSimple - Perl interface to the dnsimple.com API
+WWW::DNSimple::Templates - Perl interface to the templates section of the dnsimple.com API.
 
 =head1 SYNOPSIS
 
@@ -19,7 +19,6 @@ use Try::Tiny;
 use HTTP::Tiny;
 use URI;
 use Carp;
-
 
 
 our $VERSION = '0.0.1';
