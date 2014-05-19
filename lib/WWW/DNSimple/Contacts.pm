@@ -13,15 +13,9 @@ WWW::DNSimple::Contacts - Perl interface to the contacts section of the dnsimple
 use strict;
 
 use Moo;
-use Type::Tiny;
-use JSON::XS;
-use Try::Tiny;
-use HTTP::Tiny;
-use URI;
-use Carp;
 
 
-our $VERSION = '0.0.1';
+
 
 
 

@@ -13,15 +13,9 @@ WWW::DNSimple::Statements - Perl interface to the statements section of the dnsi
 use strict;
 
 use Moo;
-use Type::Tiny;
-use JSON::XS;
-use Try::Tiny;
-use HTTP::Tiny;
-use URI;
-use Carp;
 
 
-our $VERSION = '0.0.1';
+
 
 
 

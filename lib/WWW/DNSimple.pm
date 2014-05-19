@@ -10,21 +10,29 @@ WWW::DNSimple - Perl interface to the dnsimple.com API
 
 =cut
 
+our $VERSION = '0.0.1';
+
 use strict;
 
 use Moo;
 use Type::Tiny;
 use JSON::XS;
 use Try::Tiny;
-use HTTP::Tiny;
-use URI;
-use Carp;
+
+with "WWW::DNSimple::Role";
 
 
+use WWW::DNSimple::Prices
 
-our $VERSION = '0.0.1';
 
-
+has prices => (
+    is => 'rw',
+    lazy => 1,
+    default => sub {
+        my $self = shift;
+        return WWW::DNSimple::Prices->new($self->required_args);
+    },
+);
 
 
 

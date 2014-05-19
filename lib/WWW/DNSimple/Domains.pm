@@ -13,15 +13,9 @@ WWW::DNSimple::Domains - Perl interface to the domains section of the dnsimple.c
 use strict;
 
 use Moo;
-use Type::Tiny;
-use JSON::XS;
-use Try::Tiny;
-use HTTP::Tiny;
-use URI;
-use Carp;
 
 
-our $VERSION = '0.0.1';
+
 
 
 

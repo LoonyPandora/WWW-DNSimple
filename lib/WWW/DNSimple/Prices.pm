@@ -13,16 +13,19 @@ WWW::DNSimple::Prices - Perl interface to the prices section of the dnsimple.com
 use strict;
 
 use Moo;
-use Type::Tiny;
-use JSON::XS;
-use Try::Tiny;
-use HTTP::Tiny;
-use URI;
-use Carp;
+
+with "WWW::DNSimple::Role";
 
 
-our $VERSION = '0.0.1';
 
+sub prices {
+    my $self = shift;
+
+    $self->query({
+        method => "GET",
+        path => "/prices",
+    })
+}
 
 
 
