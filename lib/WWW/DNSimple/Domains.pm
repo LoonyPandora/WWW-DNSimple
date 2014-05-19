@@ -11,8 +11,35 @@ WWW::DNSimple::Domains - Perl interface to the domains section of the dnsimple.c
 =cut
 
 use strict;
-
 use Moo;
+
+with "WWW::DNSimple::Role";
+
+
+# Gets a list of domains
+sub get_domains {
+    my $self = shift;
+
+    $self->query({
+        method => "GET",
+        path => "/domains",
+    })
+}
+
+# Gets a single domain
+sub get_domain {
+    my ($self, $domain) = @_;
+
+    # TODO: Some better validation than it simply containing a dot
+    unless ($domain =~ m/\.+/) {
+        $self->throw("foo");
+    }
+
+    $self->query({
+        method => "GET",
+        path => "/domains/".$domain,
+    })
+}
 
 
 

@@ -11,14 +11,12 @@ WWW::DNSimple::Prices - Perl interface to the prices section of the dnsimple.com
 =cut
 
 use strict;
-
 use Moo;
 
 with "WWW::DNSimple::Role";
 
 
-
-sub prices {
+sub get_prices {
     my $self = shift;
 
     $self->query({

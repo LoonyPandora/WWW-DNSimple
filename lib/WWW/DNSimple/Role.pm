@@ -17,22 +17,22 @@ use LWP::UserAgent;
 use JSON::XS;
 use HTTP::Request;
 use URI;
+use Data::Dump qw(dump);
+
+use WWW::DNSimple::Error;
 
 with "Throwable";
 
-has ua => (is => 'ro', lazy => 1, default => \&_ua);
-has api_token => (is => 'ro', required => 1);
-has api_base => (is => 'ro', required => 1, default => \&_api_base );
-has sandbox => (is => 'ro', default => sub { 0 });
-
-
+has api_email => (is => 'rw', required => 1);
+has api_token => (is => 'rw', required => 1);
+has api_base  => (is => 'ro', required => 1, default => "https://api.sandbox.dnsimple.com"); # https://api.dnsimple.com/v1
 
 
 # Returns a hashref of all required args to create a new object
 sub required_args {
     my $self = shift;
     my $ret;
-    foreach my $col ("api_token", "api_base") {
+    foreach my $col ("api_email", "api_token", "api_base") {
         my $v = $self->$col;
         $ret->{$col} = $v if defined $v;
     }
@@ -40,45 +40,38 @@ sub required_args {
 }
 
 
+# Sends a request to the API
+sub query {
+    my ($self, $args) = @_;
 
-# Provides the LWP::UserAgent object everywhere.
-sub _ua {
-    return LWP::UserAgent->new(
+    my $ua = LWP::UserAgent->new(
         env_proxy   => 1,
         timeout     => 60,
         agent       => __PACKAGE__ . "/0.0.1",
         requests_redirectable => [],
     );
-}
 
+    $ua->default_headers(HTTP::Headers->new(
+        "Accept"            => "application/json",
+        "X-DNSimple-Token"  => $self->api_email . ":" . $self->api_token,
+    ));
 
+    my $response = $ua->request(HTTP::Request->new(
+        $args->{method}, $self->api_base . $args->{path}
+    ));
 
-# Gets an API endpoint, can be mocked
-sub _api_base {
-    my $self = shift;
-    # FIXME: Doesn't work. Figure out exceptions
-    if ($self->sandbox) {
-        __PACKAGE__->throw("Sandbox is unimplemented");
-    } else {
-        return "https://api.dnsimple.com/v1";
-    }
-}
-
-
-# Sends a request to the API
-sub query {
-    my ($self, $args) = @_;
-
-    my $request = HTTP::Request->new($args->{method}, $self->api_base . $args->{path});
-
-    my $response = $self->ua->request($request);
-    
+    # TODO: Fix error handling
     if ($response->is_success) {
         return decode_json $response->content;
     }
-    
 }
 
+
+# Raises an exception
+sub throw {
+    my $self = shift;
+    return WWW::DNSimple::Error->throw(@_);
+}
 
 
 

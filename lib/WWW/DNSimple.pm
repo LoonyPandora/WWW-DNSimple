@@ -22,7 +22,8 @@ use Try::Tiny;
 with "WWW::DNSimple::Role";
 
 
-use WWW::DNSimple::Prices
+use WWW::DNSimple::Prices;
+use WWW::DNSimple::Domains;
 
 
 has prices => (
@@ -31,6 +32,15 @@ has prices => (
     default => sub {
         my $self = shift;
         return WWW::DNSimple::Prices->new($self->required_args);
+    },
+);
+
+has domains => (
+    is => 'rw',
+    lazy => 1,
+    default => sub {
+        my $self = shift;
+        return WWW::DNSimple::Domains->new($self->required_args);
     },
 );
 
