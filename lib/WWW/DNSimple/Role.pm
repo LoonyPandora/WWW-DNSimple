@@ -64,6 +64,10 @@ sub query {
     if ($response->is_success) {
         return decode_json $response->content;
     }
+
+    $self->throw({
+        message => "Something went wrong - " . $response->status_line
+    });
 }
 
 

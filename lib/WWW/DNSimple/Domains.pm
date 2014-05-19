@@ -26,23 +26,73 @@ sub get_domains {
     })
 }
 
+
 # Gets a single domain
 sub get_domain {
     my ($self, $domain) = @_;
 
     # TODO: Some better validation than it simply containing a dot
     unless ($domain =~ m/\.+/) {
-        $self->throw("foo");
+        $self->throw("invalid domain");
     }
 
     $self->query({
         method => "GET",
         path => "/domains/".$domain,
-    })
+    });
 }
 
 
+# Gets the records for a given domain
+sub get_domain_records {
+    my ($self, $domain) = @_;
 
+    # TODO: Some better validation than it simply containing a dot
+    unless ($domain =~ m/\.+/) {
+        $self->throw("invalid domain");
+    }
+
+    $self->query({
+        method => "GET",
+        path => "/domains/".$domain."/records",
+    });
+}
+
+
+# Gets an individal domain record
+sub get_domain_record {
+    my ($self, $domain, $id) = @_;
+
+    # TODO: Some better validation than it simply containing a dot
+    unless ($domain =~ m/\.+/) {
+        $self->throw("invalid domain");
+    }
+
+    unless ($id =~ m/\d+/) {
+        $self->throw("invalid record ID");
+    }
+
+    $self->query({
+        method => "GET",
+        path => "/domains/".$domain."/records/".$id,
+    });
+}
+
+
+# Gets email forwarders
+sub get_email_forwards {
+    my ($self, $domain, $id) = @_;
+
+    # TODO: Some better validation than it simply containing a dot
+    unless ($domain =~ m/\.+/) {
+        $self->throw("invalid domain");
+    }
+
+    $self->query({
+        method => "GET",
+        path => "/domains/".$domain."/email_forwards",
+    });
+}
 
 
 
